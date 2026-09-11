@@ -43,3 +43,4 @@ ticket.deshacer_ultimo_cambio()
 
 print("Estado después de deshacer:", ticket.estado)
 
+# cambio-2
