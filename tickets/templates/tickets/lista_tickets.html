@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tickets pendientes</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            color: #333;
+        }
+
+        .encabezado {
+            background-color: #417690;
+            color: white;
+            padding: 25px 50px;
+        }
+
+        .encabezado h1 {
+            margin: 0;
+            font-size: 30px;
+        }
+
+        .contenedor {
+            width: 90%;
+            max-width: 1000px;
+            margin: 35px auto;
+        }
+
+        .subtitulo {
+            color: #555;
+            margin-bottom: 25px;
+        }
+
+        .ticket {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px 25px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-left: 5px solid #417690;
+        }
+
+        .ticket h2 {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .ticket h2 a {
+            color: #417690;
+            text-decoration: none;
+        }
+
+        .ticket h2 a:hover {
+            text-decoration: underline;
+        }
+
+        .estado {
+            display: inline-block;
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .descripcion {
+            color: #666;
+            margin-top: 12px;
+        }
+
+        .sin-tickets {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="encabezado">
+        <h1>🎫 Sistema de Tickets de Soporte</h1>
+    </div>
+
+    <div class="contenedor">
+
+        <h2>Tickets pendientes</h2>
+
+        <p class="subtitulo">
+            Tickets registrados y pendientes de atención.
+        </p>
+
+        {% for ticket in tickets %}
+
+            <div class="ticket">
+
+                <h2>
+                    <a href="{% url 'detalle_ticket' ticket.id %}">
+                        {{ ticket.titulo }}
+                    </a>
+                </h2>
+
+                <span class="estado">
+                    {{ ticket.estado }}
+                </span>
+
+                <p class="descripcion">
+                    {{ ticket.descripcion }}
+                </p>
+
+            </div>
+
+        {% empty %}
+
+            <div class="sin-tickets">
+                <h3>No hay tickets pendientes</h3>
+                <p>Actualmente no existen tickets esperando atención.</p>
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</body>
+</html>

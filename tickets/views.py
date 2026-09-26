@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import Ticket, Usuario
+from .cola_circular import ColaCircular
 
 def crear_tickets_prueba(request):
     # Necesitas al menos un usuario ya creado en el admin
@@ -29,3 +30,34 @@ def crear_tickets_prueba(request):
 
 def mostrar_mensajes(request):
     return render(request, 'tickets/mensajes.html')
+
+def lista_tickets(request):
+    tickets_pendientes = Ticket.objects.filter(
+        estado="Pendiente"
+    ).order_by("id")
+
+    cola = ColaCircular()
+
+    for ticket in tickets_pendientes:
+        cola.enqueue(ticket)
+
+    tickets = []
+
+    while not cola.esta_vacia():
+        ticket = cola.dequeue()
+        tickets.append(ticket)
+
+    return render(
+        request,
+        "tickets/lista_tickets.html",
+        {"tickets": tickets}
+    )
+
+def detalle_ticket(request, id):
+    ticket = Ticket.objects.get(id=id)
+
+    return render(
+        request,
+        "tickets/detalle_ticket.html",
+        {"ticket": ticket}
+    )
