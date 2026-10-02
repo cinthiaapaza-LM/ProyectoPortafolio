@@ -1,5 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from .forms import TicketForm
 from .models import Ticket, Usuario
 from .cola_circular import ColaCircular
 
@@ -61,3 +62,33 @@ def detalle_ticket(request, id):
         "tickets/detalle_ticket.html",
         {"ticket": ticket}
     )
+
+def crear_ticket(request):
+    if request.method == "POST":
+        formulario = TicketForm(request.POST)
+
+        if formulario.is_valid():
+            formulario.save()
+            return redirect("lista_tickets")
+    else:
+        formulario = TicketForm()
+
+    return render(request, "tickets/formulario_ticket.html", {
+        "formulario": formulario
+    })
+def editar_ticket(request, id):
+    ticket = get_object_or_404(Ticket, id=id)
+
+    if request.method == "POST":
+        formulario = TicketForm(request.POST, instance=ticket)
+
+        if formulario.is_valid():
+            formulario.save()
+            return redirect("detalle_ticket", id=ticket.id)
+    else:
+        formulario = TicketForm(instance=ticket)
+
+    return render(request, "tickets/formulario_ticket.html", {
+        "formulario": formulario,
+        "ticket": ticket
+    })

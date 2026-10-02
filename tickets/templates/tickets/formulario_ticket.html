@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<h1>
+    {% if ticket %}
+        Editar Ticket
+    {% else %}
+        Crear Ticket
+    {% endif %}
+</h1>
+
+<form method="post">
+
+    {% csrf_token %}
+
+    {{ formulario.as_p }}
+
+    <button type="submit">Guardar Ticket</button>
+
+</form>
+
+<br>
+
+<a href="{% url 'lista_tickets' %}">Volver a la lista</a>
+
+{% endblock %}

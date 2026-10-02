@@ -14,7 +14,8 @@ class Ticket(models.Model):
     descripcion = models.TextField()
     estado = models.CharField(max_length=50, default="Pendiente")
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-
+    categoria = models.CharField(max_length=100, default="General")
+   
     def __str__(self):
         return self.titulo
 
